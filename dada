@@ -1,3 +1,10 @@
+--// ===== AUTO RE-EXECUTE ON TELEPORT =====
+local SCRIPT_URL = "https://raw.githubusercontent.com/TPGtahCtoN/dada/refs/heads/main/dada"
+
+if queue_on_teleport then
+    queue_on_teleport('loadstring(game:HttpGet("' .. SCRIPT_URL .. '"))()')
+end
+
 --// ===== SERVICES =====
 local player = game.Players.LocalPlayer
 local char = player.Character or player.CharacterAdded:Wait()
@@ -14,7 +21,7 @@ local folder = workspace:FindFirstChild("StandArrow") or workspace
 -- ✅ AUTO ON
 getgenv().AutoFarm = true
 
---// ===== AUTO CLICK PLAY (1920x1080 FIXED) =====
+--// ===== AUTO CLICK PLAY =====
 local function autoClickPlay()
     local x = 960
     local y = 600
@@ -31,7 +38,6 @@ local function autoClickPlay()
     end
 end
 
--- run on start
 task.spawn(function()
     task.wait(1.5)
     autoClickPlay()
@@ -82,6 +88,11 @@ end
 --// ===== SERVER HOP =====
 
 local function serverHop()
+    -- queue script before teleport
+    if queue_on_teleport then
+        queue_on_teleport('loadstring(game:HttpGet("' .. SCRIPT_URL .. '"))()')
+    end
+
     local success, result = pcall(function()
         local req = game:HttpGet("https://games.roblox.com/v1/games/"..placeId.."/servers/Public?sortOrder=Asc&limit=100")
         return HttpService:JSONDecode(req)
